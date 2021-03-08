@@ -1,6 +1,8 @@
 const express = require('express');
 const app = express();
 const path = require('path');
+const client = require('./database/DatabaseConfig')
+const dotenv = require('dotenv').config()
 
 app.use(express.json());
 
