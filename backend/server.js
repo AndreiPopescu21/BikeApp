@@ -1,10 +1,18 @@
 const express = require('express');
 const app = express();
 const path = require('path');
-const client = require('./database/DatabaseConfig')
 const dotenv = require('dotenv').config()
+const mongoose = require('mongoose');
 
 app.use(express.json());
+
+// The forum says to ignore DB warnings
+mongoose.connect(process.env.DB_CONNECT,
+  {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true},
+  (err) => {
+      if(err) return console.error(err);
+      console.log("Connected to the database");
+  });
 
 const PORT = process.env.PORT || 3000;
 
