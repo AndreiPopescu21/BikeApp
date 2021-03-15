@@ -15,7 +15,7 @@ const NavbarComponent = () => {
         <Nav.Link as = {Link} to = "/">Rent Bikes</Nav.Link>
         <Nav.Link as = {Link} to = "/">Leaderboards</Nav.Link>
         <NavDropdown title="Other" id="basic-nav-dropdown">
-            <NavDropdown.Item as = {Link} to = "/">Fitness</NavDropdown.Item>
+            <NavDropdown.Item as = {Link} to = "/fitness">Fitness</NavDropdown.Item>
             <NavDropdown.Item as = {Link} to = "/">Average Details</NavDropdown.Item>
         </NavDropdown>
         <Nav.Item className="ml-auto">
