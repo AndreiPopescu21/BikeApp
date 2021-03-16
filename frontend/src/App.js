@@ -8,8 +8,31 @@ import PrivateRoute from './Routes/PrivateRoute';
 import HomePage from './Components/Pages/HomePage';
 import GetInformationsPage from './Components/Pages/GetInformationsPage';
 import FitnessPage from './Components/Pages/FitnessPage';
+import { useEffect, useState } from 'react';
+import pick from 'lodash/pick'
 
 function App() {
+
+const [routeCoordinates,setrouteCoordinates] = useState([]);
+useEffect (() => {
+  navigator.geolocation.getCurrentPosition(
+    (position) => {console.log(pick(position.coords, ['latitude', 'longitude']))},
+    (error) => alert(error.message),
+    {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+  )
+  let watchID = navigator.geolocation.watchPosition((position) => {
+    const positionLatLngs = pick(position.coords, ['latitude', 'longitude'])
+    setrouteCoordinates(oldArray =>[...oldArray, positionLatLngs]);
+    //NOTE : duplicate entries appear in the array
+    //console.log(positionLatLngs)
+  });
+  return ()=>{
+    navigator.geolocation.clearWatch(watchID);
+  }
+}, []);
+useEffect(()=>{
+  console.log(routeCoordinates)
+},[routeCoordinates])
   return (
     <div className="App">
       <Router>
