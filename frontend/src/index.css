@@ -1,4 +1,8 @@
 body{
-    background-color: #3F4548 !important;
+    background-image: linear-gradient(to left top, #2d2e30, #343d41, #3a4e4d, #495e52, #646b53) !important;
     color: white !important;
+    height: 100%;
+    margin: 0;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }

@@ -40,6 +40,7 @@ const GetInformationsPage = () =>{
             const token = localStorage.getItem("authToken");
 
             const {data} = await axios.post('/api/informations/setinformations', {token, height, weight}, config);
+            console.log(data);
         }catch(error){
             console.log(error.message);
         }

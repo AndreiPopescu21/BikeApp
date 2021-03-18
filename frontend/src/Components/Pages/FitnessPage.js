@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import {Col} from 'react-bootstrap';
-import {Chart, Scatter} from 'react-chartjs-2';
+import {Scatter} from 'react-chartjs-2';
 import axios from 'axios';
 
 
