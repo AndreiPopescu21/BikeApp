@@ -11,41 +11,56 @@ import FitnessPage from './Components/Pages/FitnessPage';
 import TrackerPage from './Components/Pages/TrackerPage';
 import { useEffect, useState } from 'react';
 import pick from 'lodash/pick'
+import haversine from 'haversine'
 
 function App() {
 
-const [routeCoordinates,setrouteCoordinates] = useState([]);
-useEffect (() => {
-  navigator.geolocation.getCurrentPosition(
-    (position) => {console.log(pick(position.coords, ['latitude', 'longitude']))},
-    (error) => alert(error.message),
-    {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
-  )
-  let watchID = navigator.geolocation.watchPosition((position) => {
-    const positionLatLngs = pick(position.coords, ['latitude', 'longitude'])
-    setrouteCoordinates(oldArray =>[...oldArray, positionLatLngs]);
-    //NOTE : duplicate entries appear in the array
-    //console.log(positionLatLngs)
-  });
-  return ()=>{
-    navigator.geolocation.clearWatch(watchID);
+  const [routeCoordinates, setrouteCoordinates] = useState([]);
+  const [distanceTravelled, setdistanceTravelled] = useState(0);
+  const [prevL, setprevL] = useState({});
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(
+      (position) => { setprevL(pick(position.coords, ['latitude', 'longitude']))},
+      (error) => alert(error.message),
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+    )
+    let watchID = navigator.geolocation.watchPosition((position) => {
+      const positionLatLngs = pick(position.coords, ['latitude', 'longitude'])
+      setrouteCoordinates(oldArray => [...oldArray, positionLatLngs])
+      
+    });
+    return () => {
+      navigator.geolocation.clearWatch(watchID);
+    }
+  }, []);
+
+  function calcDistance(prevLatLng,newLatLng) {
+    return (haversine(prevLatLng, newLatLng) || 0)
   }
-}, []);
-useEffect(()=>{
-  console.log(routeCoordinates)
-},[routeCoordinates])
+
+  useEffect(() => {
+    console.log(routeCoordinates)
+    if(routeCoordinates.length > 1){
+    const newLatLngs = routeCoordinates[routeCoordinates.length-1]
+
+    setdistanceTravelled(oldDistance => oldDistance + calcDistance(prevL,newLatLngs))
+    setprevL(newLatLngs)
+  }
+  }, [routeCoordinates])
   return (
     <div className="App">
       <Router>
-        <Navbar/>
+        <Navbar />
         <Switch>
-          <Route exact path="/" component={HomePage}/>
-          <PrivateRoute exact path="/gps" component = {GPSPage}/>
-          <PrivateRoute exact path="/profile" component = {ProfilePage}/>
-          <PrivateRoute exact path="/getinformations" component = {GetInformationsPage}/>
-          <PrivateRoute exact path="/fitness" component = {FitnessPage}/>
-          <PrivateRoute exact path="/tracker" component = {TrackerPage}/>
-          <Route exact path="/login" component={LoginPage}/>
+          <Route exact path="/" component={HomePage} />
+          <PrivateRoute exact path="/gps" component={GPSPage} />
+          <PrivateRoute exact path="/profile" component={ProfilePage} />
+          <PrivateRoute exact path="/getinformations" component={GetInformationsPage} />
+          <PrivateRoute exact path="/fitness" component={FitnessPage} />
+          <Route exact path="/tracker" render={(props) => (
+          <TrackerPage {...props} distance={distanceTravelled} />
+          )} />
+          <Route exact path="/login" component={LoginPage} />
         </Switch>
       </Router>
     </div>
