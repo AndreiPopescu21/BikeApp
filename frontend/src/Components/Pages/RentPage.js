@@ -82,15 +82,16 @@ const RentPage = () => {
                             <p> Location: {zone["location"]["city"]} </p>
                             <hr />
                             <Map
-                                center={[zone["location"]["latitude"], zone["location"]["longitude"]]}
+                                zoom={10}
+                                center={[zone["location"]["longitude"],zone["location"]["latitude"]]}
                                 style="mapbox://styles/mapbox/streets-v9"
                                 containerStyle={{
-                                    height: '100vh',
-                                    width: '98vw'
+                                    height: '25vh',
+                                    width: '35vw'
                                 }}
                             >
                                 <Layer type="symbol" id="marker" layout={{ 'icon-image': 'marker-15' }}>
-                                    <Feature coordinates={[zone["location"]["latitude"], zone["location"]["longitude"]]} />
+                                    <Feature coordinates={[zone["location"]["longitude"], zone["location"]["latitude"]]} />
                                 </Layer>
                             </Map>;
                         </div>
