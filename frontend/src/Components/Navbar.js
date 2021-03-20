@@ -12,7 +12,7 @@ const NavbarComponent = () => {
         <Nav.Link as = {Link} to = "/">Home</Nav.Link>
         <Nav.Link as = {Link} to = "/tracker">Tracker</Nav.Link>
         <Nav.Link as = {Link} to = "/gps">GPS</Nav.Link>
-        <Nav.Link as = {Link} to = "/">Rent Bikes</Nav.Link>
+        <Nav.Link as = {Link} to = "/rent">Rent Bikes</Nav.Link>
         <Nav.Link as = {Link} to = "/">Leaderboards</Nav.Link>
         <NavDropdown title="Other" id="basic-nav-dropdown">
             <NavDropdown.Item as = {Link} to = "/fitness">Fitness</NavDropdown.Item>
