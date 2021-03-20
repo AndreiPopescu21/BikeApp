@@ -9,7 +9,7 @@ const TrackerPage = props => {
     const [distance, setDistance] = useState(props.distance);
     const [avgSpeed, setAvgSpeed] = useState(0);
     const [delay, setDelay] = useState(1);
-    const [topspeed, setTopSpeed] = setState(0);
+    const [topspeed, setTopSpeed] = useState(0);
     const [timerPaused, setTimerPaused] = useState(false);
     const [timerStop, setTimerStop] = useState(true);
     const [prevDistance, setPrevDistance] = useState(0);

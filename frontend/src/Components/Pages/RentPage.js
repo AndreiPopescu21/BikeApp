@@ -82,7 +82,7 @@ const RentPage = () => {
                             <p> Location: {zone["location"]["city"]} </p>
                             <hr />
                             <Map
-                                zoom={10}
+                                zoom={[15]}
                                 center={[zone["location"]["longitude"],zone["location"]["latitude"]]}
                                 style="mapbox://styles/mapbox/streets-v9"
                                 containerStyle={{
