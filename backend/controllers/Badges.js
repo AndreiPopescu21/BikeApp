@@ -46,6 +46,7 @@ exports.setBadges = async (req, res, next) => {
             try{
                 var badgeList = userExists.badges;
                 console.log(badgeList)
+                const dist = userExists.distance;
                 
                 if(badgeList[0] == 0)
                     badgeList[0] = 1;
@@ -53,9 +54,9 @@ exports.setBadges = async (req, res, next) => {
                     badgeList[3] = 1;
                 if(time >= 60)
                     badgeList[4] = 1;
-                if(Distance + userExists.Distance >= 100)
+                if(Distance + userExists.distance >= 100)
                     badgeList[5] = 1;
-                if(Distance + userExists.Distance >= 500)
+                if(Distance + userExists.distance >= 500)
                     badgeList[6] = 1;
                 
                 await userExists.updateOne({distance: Distance + userExists.distance, badges: badgeList})
