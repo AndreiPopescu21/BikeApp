@@ -2,6 +2,7 @@ import ReactSpeedometer from "react-d3-speedometer";
 import {Col, Container, Row, Button} from 'react-bootstrap';
 import { Fragment, useEffect, useState } from "react";
 import Timer from 'react-compound-timer';
+import axios from 'axios'; 
 
 const TrackerPage = props => {
     const [speed, setSpeed] = useState(10);
@@ -10,6 +11,8 @@ const TrackerPage = props => {
     const [delay, setDelay] = useState(1);
 
     const [timerPaused, setTimerPaused] = useState(false);
+    const [timerStop, setTimerStop] = useState(true);
+
     useEffect(()=>{
         setInterval(()=>{setDelay(oldDelay => oldDelay + 1)}, 10000)
     },[])
@@ -18,6 +21,40 @@ const TrackerPage = props => {
         setDistance(props.distance)
         setAvgSpeed(distance/(delay*10/3600))
     },[props, delay])
+
+    const setBadges = async (distance, Time, TopSpeed) => {
+        const config = {
+            headers: {
+                "Content-type": "application/json",
+            }
+        }
+
+        try{
+            const token = localStorage.getItem("authToken");
+            const Distance = distance;
+            const time = Time;
+            const topSpeed = TopSpeed;
+            const { data } = await axios.post("/api/badges/setbadges", {token, Distance, time, topSpeed}, config);
+        }catch(error){
+            console.log(error);
+        }
+    }
+
+    const setFitness = async (Time) => {
+        const config = {
+            headers: {
+                "Content-type": "application/json",
+            }
+        }
+
+        try{
+            const token = localStorage.getItem("authToken");
+            const time = Time;
+            const { data } = await axios.post("/api/fitness/setfitness", {token,time}, config);
+        }catch(error){
+            console.log(error);
+        }
+    }
 
     return(
         <div>
@@ -62,6 +99,15 @@ const TrackerPage = props => {
                                 <h3>Time Elapsed</h3>
                                     <br/>
                                     <Timer
+                                    startImmediately={false}
+                                    checkpoints={[
+                                        {
+                                            time: 60*60 ,
+                                            callback: () => {
+                                                setBadges(0,60,0)
+                                            },
+                                        }
+                                    ]}
                                     timer={0}
                                     onReset={() => {
                                         setSpeed(0);
@@ -69,8 +115,14 @@ const TrackerPage = props => {
                                         setDistance(0);}}
                                     onPause={() => setTimerPaused(false)}
                                     onResume={() => setTimerPaused(true)}
+                                    onStart={() => setTimerStop(false)}
+                                    onStop={() => {
+                                        setTimerStop(true);
+                                        setBadges(distance,0,0);
+                                        setFitness(delay);
+                                    }}
                                     >
-                                    {({ start, resume, pause, stop, reset, timerState }) => (
+                                    {({ start, resume, pause, stop, reset }) => (
                                         <Fragment>
                                             <p style={{fontSize: "3rem"}}>
                                             <Timer.Minutes /> : <Timer.Seconds /> 
@@ -91,6 +143,16 @@ const TrackerPage = props => {
                                                     <Button onClick={reset}
                                                         variant="light"
                                                         className="d-block mx-auto img-fluid w-50">Reset</Button>
+
+                                                { timerStop ?
+                                                    <Button onClick={start}
+                                                        variant="light"
+                                                        className="d-block mx-auto img-fluid w-50">Start</Button>
+                                                    :
+                                                    <Button onClick={stop}
+                                                        variant="light"
+                                                        className="d-block mx-auto img-fluid w-50">Stop</Button>
+                                                }            
                                             </Row>    
                                             </div>
                                             </Fragment>

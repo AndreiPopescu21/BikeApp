@@ -44,3 +44,4 @@ app.get('/*', (req, res) => {
   app.use("/api/fitness" ,require('./routes/Fitness'));
   app.use("/api/informations" ,require('./routes/HandleInformations'));
   app.use("/api/rent" ,require('./routes/Rent'));
+  app.use("/api/badges" ,require('./routes/Badges'));

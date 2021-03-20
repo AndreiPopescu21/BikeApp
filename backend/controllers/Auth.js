@@ -17,7 +17,8 @@ exports.login = async (req, res, next) => {
                 try{
                     if(!userExists){
                         userExists = await User.create({
-                                    "email": email
+                                    "email": email,
+                                    "badges": [0,0,0,0,0,0,0]
                                 });
                     }
                 }catch(err){

@@ -11,7 +11,9 @@ const UserSchema = new mongoose.Schema({
     email: {type: String, required: true},
     weight: {type: Number, default: null},
     height: {type: Number, default: null},
-    caloriesDetails: [CaloriesDetailSchema]
+    caloriesDetails: [CaloriesDetailSchema],
+    badges: [{type: Number, default: null}],
+    distance: {type: Number, default: 0}
 });
 
 UserSchema.methods.getToken = async function(){

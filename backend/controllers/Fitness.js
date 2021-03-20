@@ -2,9 +2,9 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/UserModel');
 
 exports.setFitness = async (req, res, next) =>{
-    const { time, MET, token } = req.body;
+    const { time, token } = req.body;
     
-    if(!token || !MET || !time)
+    if(!token || !time)
         res.status(400).json({error: "Something went wrong"});
     else{
         jwt.verify(token, process.env.JWT_SECRET, async function(err, decodedToken){
@@ -18,6 +18,7 @@ exports.setFitness = async (req, res, next) =>{
                 return res.status(400).json({error: "User does not exist!"});
 
             try{
+                const MET = 8.1689655172414;
                 const calories = (MET * userExists.weight * 3.5) / 200 * time;
 
                 caloriesData = userExists.caloriesDetails;
@@ -99,4 +100,32 @@ exports.getFitness = async (req, res, next) => {
         });
     }
 
+}
+
+exports.checkInfo = async (req, res, next) => {
+    const {token} = req.body;
+
+    if(!token)
+        res.status(400).json({error: "Something went wrong"});
+    else{
+        jwt.verify(token, process.env.JWT_SECRET, async function(err, decodedToken){
+            if(err){
+                return res.status(400).json({error: "Expired Link"});
+            }
+            const { id } = decodedToken;
+
+            const userExists = await User.findOne({_id: id});
+            if(!userExists)
+                return res.status(400).json({error: "User does not exist!"});
+
+            try{
+                if(userExists.weight != null && userExists.height != null)
+                    res.status(200).json({data: "Success"});
+                else
+                    res.status(200).json({data: "Fail"});
+            }catch(error){
+                res.status(400).json({error: error.message});
+            }
+        });
+    }
 }
