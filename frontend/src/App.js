@@ -53,7 +53,7 @@ function App() {
         <Navbar />
         <Switch>
           <Route exact path="/" component={HomePage} />
-          <PrivateRoute exact path="/gps" component={GPSPage} />
+          <Route exact path="/gps" component={GPSPage} />
           <PrivateRoute exact path="/profile" component={ProfilePage} />
           <PrivateRoute exact path="/getinformations" component={GetInformationsPage} />
           <PrivateRoute exact path="/fitness" component={FitnessPage} />
