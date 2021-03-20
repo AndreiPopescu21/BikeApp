@@ -9,10 +9,10 @@ const TrackerPage = props => {
     const [distance, setDistance] = useState(props.distance);
     const [avgSpeed, setAvgSpeed] = useState(0);
     const [delay, setDelay] = useState(1);
-
+    const [topspeed, setTopSpeed] = setState(0);
     const [timerPaused, setTimerPaused] = useState(false);
     const [timerStop, setTimerStop] = useState(true);
-
+    const [prevDistance, setPrevDistance] = useState(0);
     useEffect(()=>{
         setInterval(()=>{setDelay(oldDelay => oldDelay + 1)}, 10000)
     },[])
@@ -20,7 +20,15 @@ const TrackerPage = props => {
     useEffect(()=>{
         setDistance(props.distance)
         setAvgSpeed(distance/(delay*10/3600))
+        setPrevDistance(props.distance)
+        if(avgSpeed > topspeed){
+            setTopSpeed(avgSpeed);
+        }
     },[props, delay])
+
+    useEffect(()=>{
+        setSpeed((props.distance-prevDistance)/(delay*10/3600))
+    },[props])
 
     const setBadges = async (distance, Time, TopSpeed) => {
         const config = {
@@ -49,7 +57,7 @@ const TrackerPage = props => {
 
         try{
             const token = localStorage.getItem("authToken");
-            const time = Time;
+            const time = Time*10/60;
             const { data } = await axios.post("/api/fitness/setfitness", {token,time}, config);
         }catch(error){
             console.log(error);
@@ -118,7 +126,7 @@ const TrackerPage = props => {
                                     onStart={() => setTimerStop(false)}
                                     onStop={() => {
                                         setTimerStop(true);
-                                        setBadges(distance,0,0);
+                                        setBadges(distance,0,topspeed);
                                         setFitness(delay);
                                     }}
                                     >

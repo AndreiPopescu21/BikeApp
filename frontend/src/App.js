@@ -58,7 +58,7 @@ function App() {
           <PrivateRoute exact path="/profile" component={ProfilePage} />
           <PrivateRoute exact path="/getinformations" component={GetInformationsPage} />
           <PrivateRoute exact path="/fitness" component={FitnessPage} />
-          <PrivateRoute exact path="/rent" component={RentPage} />
+          <Route exact path="/rent" component={RentPage} />
           <Route exact path="/tracker" render={(props) => (
           <TrackerPage {...props} distance={distanceTravelled} />
           )} />
