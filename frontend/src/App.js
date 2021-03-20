@@ -9,6 +9,7 @@ import HomePage from './Components/Pages/HomePage';
 import GetInformationsPage from './Components/Pages/GetInformationsPage';
 import FitnessPage from './Components/Pages/FitnessPage';
 import TrackerPage from './Components/Pages/TrackerPage';
+import RentPage from './Components/Pages/RentPage';
 import { useEffect, useState } from 'react';
 import pick from 'lodash/pick'
 import haversine from 'haversine'
@@ -57,6 +58,7 @@ function App() {
           <PrivateRoute exact path="/profile" component={ProfilePage} />
           <PrivateRoute exact path="/getinformations" component={GetInformationsPage} />
           <PrivateRoute exact path="/fitness" component={FitnessPage} />
+          <PrivateRoute exact path="/rent" component={RentPage} />
           <Route exact path="/tracker" render={(props) => (
           <TrackerPage {...props} distance={distanceTravelled} />
           )} />
