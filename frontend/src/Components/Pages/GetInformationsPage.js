@@ -49,8 +49,9 @@ const GetInformationsPage = () =>{
     return (
         <div>
             <br/>
+            <h1> Fitness informations </h1>
             <Form className="m-auto" 
-                style ={{width: "35%", backgroundColor: 'green', padding: "1%", borderRadius: '5px'}}>
+                style ={{width: "35"}}>
                 <Form.Group>
                     <Form.Label>Enter your body weight</Form.Label>
                     <Form.Control 

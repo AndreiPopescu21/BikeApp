@@ -4,14 +4,35 @@ import {Scatter} from 'react-chartjs-2';
 import axios from 'axios';
 
 
-const FitnessPage = () => {
+const FitnessPage = ({history}) => {
     const [caloriesBurnt, setCaloriesBurnt] = useState(0);
     const [plotData, setPlotData] = useState([]);
 
     useEffect(() => {
         getDate();
+        checkDetails();
     }, [])
 
+    const checkDetails = async () => {
+        const config = {
+            header: {
+                "Content-type": "application/json"
+            }
+        }
+
+        try{
+            const token = localStorage.getItem("authToken");
+
+            const {data} = await axios.post('/api/fitness/checkInfo', {token}, config);
+            if(data.data == "Fail")
+            {
+                history.push('/getinformations');
+                history.go(0);
+            }
+        }catch(error){
+            console.log(error.message);
+        }
+    }
 
     const getDate = async () => {
         const config = {

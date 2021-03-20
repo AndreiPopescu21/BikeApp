@@ -7,7 +7,8 @@ import FourthIcon from "../../Images/speedometer.svg"
 import FifthIcon from "../../Images/hour.svg"
 import SixthIcon from "../../Images/road-sign.svg"
 import SeventhIcon from "../../Images/infinity.svg"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import axios from 'axios';
 
 const ProfilePage = ({ history }) => {
 
@@ -17,6 +18,26 @@ const ProfilePage = ({ history }) => {
         history.go(0);
     }
     const [badges, setBadges] = useState([]);
+
+    useEffect(() => {
+        getBadges();
+    }, [])
+
+    const getBadges = async () => {
+        const config = {
+            headers: {
+                "Content-type": "application/json",
+            }
+        }
+
+        try{
+            const token = localStorage.getItem("authToken");
+            const { data } = await axios.post("/api/badges/getbadges", {token}, config);
+            setBadges(data.data);
+        }catch(error){
+            console.log(error);
+        }
+    }
 
     return (
         <div>
@@ -112,6 +133,17 @@ const ProfilePage = ({ history }) => {
                                 <p>Travel 500km</p>
                             </div>}
                     </Row>
+                    <Button
+                        onClick={() =>{
+                            history.push('/getinformations');
+                            history.go(0);
+                        }}
+                        variant="light"
+                        style={{
+                            backgroundColor: '#4CBB17', margin: '10%'
+                        }}
+                        className="d-block mx-auto img-fluid w-50"
+                    > Fitness Informations </Button>
                     <Button onClick={logout}
                         variant="light"
                         style={{
